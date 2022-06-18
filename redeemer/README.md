@@ -32,9 +32,17 @@ External Contracts:
 - [`ISense(d).redeem(o, m, amount);`](https://github.com/sense-finance/sense-v1/blob/3c4335f7fad5609b5c4afeab5a230759930f46da/pkg/core/src/Divider.sol#L305)
 Libraries: MarketPlace (internal), Safe (internal)
 
+### Description
+
 This is a critical contract. It will be used by Illuminate admins and users to route owed debt back to users after their loans have matured. 
 
 Users redeem their debt in a two step process. Once a particular market's loans have matured, users or the protocol may call the `redeem` method for that protocol using its `Principals` enum int value (e.g. Swivel = 1, Yield = 2, ...). Those `redeem` calls will transfer the principal tokens from the `Lender.sol` contract to the redeemer contract's address. From there, the redeemer will call in the principal's `redeem` call, which will transfer owed underlying tokens to the redeemer contract. From there, a user can call `redeem` on Illuminate's `redeem` method, and that will transfer the underlying tokens back to their wallet based on their balance of zcTokens for the given market.
+
+#### Specific Concerns
+
+It is very important that a user is not able to withdraw more capital than they have owed to them. In general, when a principal's `redeem` method is called, we transfer all outstanding principal tokens for that market to the redeemer. From there, it is up to the user to `redeem` their owed debt by calling Illuminate's `redeem`.
+
+We also want to be very careful to avoid reentrancy attacks as these contracts call into many external protocols.
 
 # Safe.sol
 
