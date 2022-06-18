@@ -32,6 +32,15 @@ External Contracts:
 - [`ISense(d).redeem(o, m, amount);`](https://github.com/sense-finance/sense-v1/blob/3c4335f7fad5609b5c4afeab5a230759930f46da/pkg/core/src/Divider.sol#L305)
 Libraries: MarketPlace (internal), Safe (internal)
 
+
+# Safe.sol
+
+LOC: 58
+External Contracts: NA
+Libraries: NA
+
+This is a utility contract. It's primarily used for optimizing ERC20 functionality.
+
 ### Description
 
 This is a critical contract. It will be used by Illuminate admins and users to route owed debt back to users after their loans have matured. 
@@ -43,11 +52,3 @@ Users redeem their debt in a two step process. Once a particular market's loans 
 It is very important that a user is not able to withdraw more capital than they have owed to them. In general, when a principal's `redeem` method is called, we transfer all outstanding principal tokens for that market to the redeemer. From there, it is up to the user to `redeem` their owed debt by calling Illuminate's `redeem`.
 
 We also want to be very careful to avoid reentrancy attacks as these contracts call into many external protocols.
-
-# Safe.sol
-
-LOC: 58
-External Contracts: NA
-Libraries: NA
-
-This is a utility contract. It's primarily used for optimizing ERC20 functionality.

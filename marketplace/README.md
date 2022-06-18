@@ -90,3 +90,17 @@ External Contracts:
 Libraries: Safe (internal)
 
 This file can be ignored. It used only to provide the `Principals` enum to the Redeemer contract.
+
+### Description
+
+This is a critical contract. It will be used by Illuminate to create new lending markets and facilitate swaps of principal tokens for their underlying via YieldSpace pools.
+
+There are two critical functionalities provided by the marketplace contract.
+
+First, there is the creation of markets. A market is defined as the tuple of maturity (defined by a `uint256` timestamp) and an underlying asset (identified by its contract `address`). When creating a market, the `admin` will provide a list of addresses that correspond to each principal's index value in the `Principals` enum. When a `lend` or `redeem` method is called later, the contracts will be able to retrieve those addresses via the `markets` mapping held in the MarketPlace contract.
+
+Second, the MarketPlace contract is used to facilitate swaps between the zcTokens and underlying assets via their respective YieldSpace pools. These are defined in the `pools` mapping and can be added by the `admin` after the creation of the pool. In addition, `pools` may be paused on a principal basis by the `admin`.
+
+#### Specific Concerns
+
+The MarketPlace contract is primarily operated by the `admin`. As such, it is very important that only the `admin` be able to edit the `pools` and `markets` attributes. If either the `pools` or the `markets` attributes were to change, it would present substantial security risks to the Illuminate protocol.
