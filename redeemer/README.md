@@ -50,4 +50,4 @@ Users redeem their debt in a two step process. Once a particular market's loans 
 
 It is very important that a user is not able to withdraw more capital than they have owed to them. In general, when a principal's `redeem` method is called, we transfer all outstanding principal tokens for that market to the redeemer. From there, it is up to the user to `redeem` their owed debt by calling Illuminate's `redeem`.
 
-We also want to be very careful to avoid reentrancy attacks as these contracts call into many external protocols.
+We also want to be very careful to avoid reentrancy attacks as these contracts call into many external contracts.

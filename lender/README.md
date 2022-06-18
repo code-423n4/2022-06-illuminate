@@ -28,8 +28,6 @@ External Contracts:
 - [`IYield(y).sellBase(address(this), returned);`](https://github.com/yieldprotocol/yieldspace-v2/blob/17b18e26de37e52e504b82f2883cf90249b7a9f5/contracts/Pool.sol#L369)
 Libraries: Element (internal), MarketPlace (internal), Swivel (internal)
 
-
-
 ## Interfaces.sol
 
 LOC: 121
@@ -74,12 +72,22 @@ This is a utility contract. It is used to safely cast between differently sized 
 
 ### Description
 
-This is a critical contract. It will be used by Illuminate admins and users to route owed debt back to users after their loans have matured. 
+This is a critical contract. It will be used by Illuminate admins and users to lend capital.
 
-Users redeem their debt in a two step process. Once a particular market's loans have matured, users or the protocol may call the `redeem` method for that protocol using its `Principals` enum int value (e.g. Swivel = 1, Yield = 2, ...). Those `redeem` calls will transfer the principal tokens from the `Lender.sol` contract to the redeemer contract's address. From there, the redeemer will call in the principal's `redeem` call, which will transfer owed underlying tokens to the redeemer contract. From there, a user can call `redeem` on Illuminate's `redeem` method, and that will transfer the underlying tokens back to their wallet based on their balance of zcTokens for the given market.
+This contract works by heavily overloading the `lend` method. Each lend is also passed a `uint8 p` parameter which represents the protocol to use (based on the `Principals` enum). From there, the user's principal tokens are transferred to the lender contract, which in turn executes the appropriate operation to execute a lend. The user then receives an equivalent amount of zcTokens to later redeem, upon maturity, their original captial plus interest.
 
+At a high level, the lend operations work as follows:
+0. Lender verifies that the maturity and underlying are correct for the given principal token
+1. User transfers their principal tokens to the lender contract
+2. A fee is calculated and the given principal's fee total to withdraw is updated in `fees`
+3. The lend operation is executed using the remaining principal tokens
+4. Based on the lend operation, a certain amount of zcTokens are minted to the user
+
+After maturity, the user should be able to use the zcTokens to retrieve the owed underlying via the redeemer contract.
 #### Specific Concerns
 
-It is very important that a user is not able to withdraw more capital than they have owed to them. In general, when a principal's `redeem` method is called, we transfer all outstanding principal tokens for that market to the redeemer. From there, it is up to the user to `redeem` their owed debt by calling Illuminate's `redeem`.
+The user must not be able to mint more zcTokens than appropriate for a given loan. 
 
-We also want to be very careful to avoid reentrancy attacks as these contracts call into many external protocols.
+In addition, the withdrawl method should not be able to extract more fees than the lender contract is entitled to collect.
+
+We also want to be very careful to avoid reentrancy attacks as these contracts call into many external contracts.
