@@ -32,7 +32,6 @@ External Contracts:
 - [`ISense(d).redeem(o, m, amount);`](https://github.com/sense-finance/sense-v1/blob/3c4335f7fad5609b5c4afeab5a230759930f46da/pkg/core/src/Divider.sol#L305)
 Libraries: MarketPlace (internal), Safe (internal)
 
-
 # Safe.sol
 
 LOC: 58
