@@ -16,7 +16,7 @@ General Project Docs:https://docs.illuminate.finance
 Contract Docs: https://docs.illuminate.finance/developers/contract 
 
 
-### **Order Path:**
+### **Lend and Redeem Path:**
 
 A market, defined by an underlying asset (`address`) and a maturity (`uint256`) is created by the admin via the MarketPlace contract. From there, the admin approves the Lender for all principal tokens via the Lender contract.
 
@@ -26,14 +26,15 @@ Once the loan has matured, the admin will call `redeem` on all principals servic
 
 Next, a user can redeem his owed capital by calling `redeem` with Illuminate's principal. This will result in his meta-principal tokens being burned, and a proportional amount of underlying assets being returned to him.
 
-### ** metaPrincipal token (ERC-5095) functionality:**
-TODO: Sourabh
-When a user initiates a new fixed-yield position on our orderbook, or manually calls `splitUnderlying`, an underlying token is split into zcTokens and nTokens. (the fixed-yield comes from immediately selling nTokens).
+### ** metaPrincipal token [ERC5095](https://github.com/ethereum/EIPs/pull/5095) functionality:**
 
-A zcToken (standard erc-20 + erc-2612) can be redeemed 1-1 for underlying upon maturity. After maturity, if a user has not redeemed their zcTokens, they begin accruing interest from the deposit in compound. 
+The meta-principal token represents a user's owed capital in a given market, defined by an underlying asset and maturity. Meta-principal tokens are minted to users when they call `lend`. The number of tokens they own in a given market indicates how much underlying assets they are entitled to when the market matures.
 
-An nToken (non-standard contract balance) is a balance within a users `vault`(vault.notional) within VaultTracker.sol. nTokens (notional balance) represent a deposit in an underlying protocol (compound), and accrue the interest from this deposit until maturity. This interest can be redeemed at any time.
+A meta-principal token is minted for each market.
 
+The meta-principal token conforms to the ERC5095 interface. The purpose of this interface is to indicate ownership of an underlying ERC20 at a future date. In the case of Illuminate, this is used to represent capital that has been lent. 
+
+By having a common token accross all principals for a given market, Illuminate enables arbitrage across rates, ensuring that users get access to the best possible rate. In addition, having a common token for a market allows it to be traded for its underlying via YieldSpace pools.
 
 # Smart Contracts 
 
@@ -98,17 +99,41 @@ Safe.sol (internal)
 
 ## **Lender:**
 
-TODO: Sourabh
+Lender.sol facilitates all lending via the overloaded `lend` method. Users must find the best principal to lend off-chain and then call the right `lend` method and provide the correct parameters to lend capital in the market of their choice. In exchange for lending on Illuminate, the user will receive meta-principal tokens in the market they lent in.
+
+The admin is given privilages to pause principals from lending. This may be important in the event of protocol insolvency or a bug. In addition, the admin is able to able to withdraw fees.
+
+The lender also plays a part in kicking off markets. It is responsible for approving the spending of principal tokens after the creation of the market.
 
 ### Areas of Concern
+
+- The admin must not be able to withdraw more fees than what he is entitled to.
+- The fee calculation is correct.
+- There are no adverse effects from calling the wrong principal for a given `lend` function to other users.
+- An appropriate amount of meta-principal tokens are minted to the user whenever a `lend` operation is called.
+- The approval process is sound. Once `createMarket` is executed, users are not able to mint meta-principal tokens until `approve` has approved the Lender for all principal tokens in that market.
+
 ## **Marketplace:**
 
-TODO: Sourabh
+Marketplace.sol acts as the central hub for creating new `markets` (defined as an asset-matury pair). The `markets` mapping is stored and admins are the only ones that can create markets.
+
+In addition, MarketPlace.sol will route swaps between the meta-principal token and its respective underlying token via YieldSpace pool. This is tracked via the `pools` mapping that can only be changed by the admin.
+
+Lastly, the MarketPlace mints new meta-principal tokens wheneveer a new market is created. These tokens will conform to the ERC5095 interface.
 
 ### Areas of Concern
+
+- The admin cannot withdraw funds without waiting for the period defined by `HOLD`.
+- Users are able to swap between their meta-principal tokens and the underlying using YieldSpace pools.
+- The admin can add another principal to a market after `createMarket` has been called.
 
 ## **Redeemer:**
 
-TODO: Sourabh
+A redemption is a two step process. First, principal tokens held by the Lender contract must be redeemed for underlying tokens. Second, users must burn their meta-principal tokens to receive their owed underlying assets via Illuminate's `redeem` function.
+
+Redemptions require that a user has the meta-principal token. In addition, to a user manually redeeming their tokens, the meta-principal token contracts can use `authRedeem` to redeem tokens to their users on their behalf.
 
 ### Areas of Concern
+
+- Ensure that something out-of-order would not enable a user to redeem more or less tokens than they are entitled to. For example, if a market was partially redeemed (i.e. some principals had not been redeemed by the Redeemer yet), it would not adversely affect a user to call redeem on Illuminate with their meta-principal tokens.
+- The `authorized` methods could not be used to incorrectly redeem funds to another user or steal funds in some manner.
