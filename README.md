@@ -17,10 +17,14 @@ Contract Docs: https://docs.illuminate.finance/developers/contract
 
 
 ### **Order Path:**
-TODO: Sourabh
-A taker initiates their own position using `initiate` or `exit` on Swivel.sol, in the process filling another user's order. Swivel.sol handles fund custody and deposits/withdrawals from underlying protocols (compound). Params are routed to Marketplace.sol and according to the `underlying` and `maturity` of an order, a market is identified (asset-maturity combination), and zcTokens and nTokens are minted/burnt/exchanged within that market according to the params.
 
-Order fill amounts and cancellations are tracked on chain based on a keccak of the order itself.
+A market, defined by an underlying asset (`address`) and a maturity (`uint256`) is created by the admin via the MarketPlace contract. From there, the admin approves the Lender for all principal tokens via the Lender contract.
+
+Next, a user can lend capital for that market by calling `lend`. Depending on the principal he passes to `lend`, he will have to provide different parameters. When `lend` is called, his underlying asset is transferred to the Lender. From there, the Lender converts the underlying asset into principal tokens for the chosen principal. Finally, the `lend` operation ends by minting meta-principal tokens to the user. These tokens will represent his loan in this particular market.
+
+Once the loan has matured, the admin will call `redeem` on all principals servicing a given market. These `redeem` methods will receive the owed principal tokens from the Lender contract and call the redemption functions for each principal. At that point, they will be holding the originally lent capital plus interest.
+
+Next, a user can redeem his owed capital by calling `redeem` with Illuminate's principal. This will result in his meta-principal tokens being burned, and a proportional amount of underlying assets being returned to him.
 
 ### ** metaPrincipal token (ERC-5095) functionality:**
 TODO: Sourabh
@@ -92,42 +96,19 @@ MarketPlace.sol (internal), Safe.sol (internal)
 
 Safe.sol (internal)
 
-## **Swivel:**
-Swivel.sol handles all fund custody, and most all user interaction methods are on Swivel.sol (`initiate`,`exit`,`splitUnderying`,`combineTokens`, `redeemZcTokens`, `redeemVaultInterest`). We categorize all order interactions as either `payingPremium` or `receivingPremium` depending on the params (`vault` & `exit`) of an order filled, and whether a user calls `initiate` or `exit`. 
+## **Lender:**
 
-For example, if `vault` = true, the maker of an order is interacting with their vault, and if `exit` = true, they are selling notional (nTokens) and would be `receivingPremium`. Alternatively, if `vault` = false, and `exit` = false, the maker is initiating a fixed yield, and thus also splitting underlying and selling nTokens, `receivingPremium`. 
+TODO: Sourabh
 
-A warden, @ItsmeSTYJ was kind enough to organize a matrix which might help understand the potential interactions: [Link](https://cdn.discordapp.com/attachments/893151471388999690/893367485540212756/unknown.png)
-
-
-Outside of this sorting, the basic order interaction logic is:
-1. Check Signatures, Cancellations, Fill availability for order validity
-2. Calculate either principalFilled or premiumFilled depending on whether the order is paying/receivingPremium
-3. Calculate fee
-4. Deposit/Withdraw from compound and/or exchange/mint/burn zcTokens and nTokens through marketplace.sol
-5. Transfer fees
-
-Other methods (`splitUnderying`,`combineTokens`, `redeemZcTokens`, `redeemVaultInterest`) largely just handle fund custody from underlying protocols, and shoot burn/mint commands to marketplace.sol.
-
+### Areas of Concern
 ## **Marketplace:**
-Marketplace.sol acts as the central hub for tracking all markets (defined as an asset-matury pair). Markets are stored in a mapping and admins are the only ones that can create markets.
 
-Any orderbook interactions that require zcToken or nToken transfers are handled through marketplace burn/mints in order to avoid requiring approvals.
+TODO: Sourabh
 
-If a user wants to transfer nTokens are without using our orderbook, they do so directly through the marketplace.sol contract.
+### Areas of Concern
 
-## **VaultTracker:**
-A user's vault has three properties, `notional` (nToken balance), `redeemable` (underlying accrued to redeem), and `exchangeRate` (compound exchangeRate of last vault interaction).
+## **Redeemer:**
 
-When a user takes on a floating position and purchases nTokens (vault initiate), they increase the notional balance of their vault (`vault.notional`). Opposingly, if they sell nTokens, this balance decreases.
+TODO: Sourabh
 
-Every time a user either increases/decreases their nToken balance (`vault.notional`), the marginal interest since the user's last vault interaction is calculated + added to `vault.redeemable`, and a new `vault.exchangeRate` is set.
-
-
-# Areas of Concern:
-There are a few primary targets for concern:
-1. Ensuring no vulnerabilities in order validity and the use of an order's hash to track cancel status and fill amount.
-2. Ensuring the accurate calculation of deposit interest. This includes VaultTracker.sol + the calculation of marginal interest between vault interactions pre-maturity, and Marketplace.sol + the calculation of zcToken interest post-maturity.
-3. Ensuring maturity is handled properly.
-
-One additional small area of concern that isn't necessarily defined in the scope above but may be rewarded could be in the ERC-2612 chain imported as zcToken.sol in Marketplace.sol
+### Areas of Concern
