@@ -68,7 +68,7 @@ This is a utility contract. It is used to safely cast between differently sized 
 --------------------------------------------------------------------------------
 File                                         blank        comment           code
 --------------------------------------------------------------------------------
-./test/lender/Lender.sol                       110            227            381
+./test/lender/Lender.sol                       111            234            392
 ./test/lender/Interfaces.sol                    54            104            137
 ./test/lender/Safe.sol                          32             47             95
 ./test/lender/Element.sol                        6              1             22
@@ -76,7 +76,7 @@ File                                         blank        comment           code
 ./test/lender/MarketPlace.sol                    2              2             14
 ./test/lender/Cast.sol                           2              3              7
 --------------------------------------------------------------------------------
-SUM:                                           209            386            675
+SUM:                                           210            393            686
 --------------------------------------------------------------------------------
 
 ### Description

@@ -82,16 +82,17 @@ This file can be ignored. It used only to provide the `Principals` enum to the R
 
 ### LOC Report
 
+-------------------------------------------------------------------------------------
 File                                              blank        comment           code
 -------------------------------------------------------------------------------------
-./test/marketplace/MarketPlace.sol                   27            103            137
+./test/marketplace/MarketPlace.sol                   26             98            129
 ./test/marketplace/Safe.sol                          32             47             95
 ./test/marketplace/ERC5095.sol                       16             38             88
 ./test/marketplace/ERC20.sol                         21            105             71
 ./test/marketplace/Interfaces.sol                    28            104             63
 ./test/marketplace/ERC20Permit.sol                   12             19             54
 -------------------------------------------------------------------------------------
-SUM:                                                136            416            508
+SUM:                                                135            411            500
 -------------------------------------------------------------------------------------
 
 ### Description
