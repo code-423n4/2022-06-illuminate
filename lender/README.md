@@ -4,7 +4,6 @@ This README document explains each of the contracts in this directory and their 
 
 ## Lender.sol
 
-LOC: 358
 External Contracts: 
 - [`ISwivel(swivelAddr).initiate(o, a, s);`](ISwivel(swivelAddr).initiate(o, a, s);)
 - [`IElementToken(principal).underlying() != u`](https://github.com/element-fi/elf-contracts/blob/885666433894c598223ea6e32f8cf38236efc2f1/contracts/Tranche.sol#L28)
@@ -30,7 +29,6 @@ Libraries: Element (internal), MarketPlace (internal), Swivel (internal)
 
 ## Interfaces.sol
 
-LOC: 121
 External Contracts: NA
 Libraries: NA
 
@@ -38,7 +36,6 @@ This is a conventional interfaces file. We use it to call methods in external co
 
 ## Safe.sol
 
-LOC: 95
 External Cntracts: NA
 Libraries: NA
 
@@ -46,29 +43,41 @@ This is a utility contract. It's primarily used for optimizing ERC20 functionali
 
 ## Element.sol
 
-LOC: 22
 External Contracts: NA
 Libraries: NA
 
 ## Swivel.sol
 
-LOC: 19
 External Contracts: NA
 Libraries: NA
 
 ## MarketPlace.sol
 
-LOC: 14
 External Contracts: NA
 Libraries: NA
 
 ## Cast.sol
 
-LOC: 7
 External Contracts: NA
 Libraries: NA
 
 This is a utility contract. It is used to safely cast between differently sized integer types.
+
+### LOC Report
+
+--------------------------------------------------------------------------------
+File                                         blank        comment           code
+--------------------------------------------------------------------------------
+./test/lender/Lender.sol                       110            227            381
+./test/lender/Interfaces.sol                    54            104            137
+./test/lender/Safe.sol                          32             47             95
+./test/lender/Element.sol                        6              1             22
+./test/lender/Swivel.sol                         3              2             19
+./test/lender/MarketPlace.sol                    2              2             14
+./test/lender/Cast.sol                           2              3              7
+--------------------------------------------------------------------------------
+SUM:                                           209            386            675
+--------------------------------------------------------------------------------
 
 ### Description
 

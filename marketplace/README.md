@@ -4,7 +4,6 @@ This README document explains each of the contracts in this directory and their 
 
 ## ERC2612.sol
 
-LOC: 31
 External Contracts: NA
 Libraries: NA
 
@@ -12,7 +11,6 @@ Implementation of ERC2612 used by the ZcToken.
 
 ## Hash.sol
 
-LOC: 45
 External Contracts: NA
 Libraries: NA
 
@@ -20,7 +18,6 @@ This is a utility contract. It's primarily used for optimizing ERC20 functionali
 
 ## IErc2612.sol
 
-LOC: 31
 External Contracts: NA
 Libraries: NA
 
@@ -28,7 +25,6 @@ This is in interface that is used by ZcToken.sol.
 
 ## Interfaces.sol
 
-LOC: 47
 External Contracts: NA
 Libraries: NA
 
@@ -36,7 +32,6 @@ This is a standard interfaces file used
 
 ## IPErc20.sol
 
-LOC: 14
 External Contracts: NA
 Libraries: NA
 
@@ -44,7 +39,6 @@ This is an interface implemented by ERC-2612, which is implemented by the ZcToke
 
 ## IZcToken.sol
 
-LOC: 6
 External Contracts: NA
 Libraries: NA
 
@@ -52,7 +46,6 @@ This is the interface for the ZcToken, which implements ERC-2612. The purpose of
 
 ## PErc20.sol
 
-LOC: 91
 External Contracts: NA
 Libraries: NA
 
@@ -60,15 +53,12 @@ This file is an implementation of the PERC20 interface, which is implemented by 
 
 ## Safe.sol
 
-LOC: 47
 External Contracts: NA
 Libraries: NA
 
 This is a utility contract. It's primarily used for optimizing ERC20 functionality.
 
-## ZcToken.sol
-
-LOC: 34
+## ZcToken.so
 External Contracts: NA
 Libraries: NA
 
@@ -78,7 +68,6 @@ This contract implements the ERC2612 interface, which implements the PERC20 (per
 
 ## MarketPlace.sol
 
-LOC: 122
 // TODO: Update the interface and add links to the IPool interface
 External Contracts: 
 - [`return pool.sellPrincipalToken(msg.sender, pool.sellPrincipalTokenPreview(a));`]()
@@ -90,6 +79,20 @@ External Contracts:
 Libraries: Safe (internal)
 
 This file can be ignored. It used only to provide the `Principals` enum to the Redeemer contract.
+
+### LOC Report
+
+File                                              blank        comment           code
+-------------------------------------------------------------------------------------
+./test/marketplace/MarketPlace.sol                   27            103            137
+./test/marketplace/Safe.sol                          32             47             95
+./test/marketplace/ERC5095.sol                       16             38             88
+./test/marketplace/ERC20.sol                         21            105             71
+./test/marketplace/Interfaces.sol                    28            104             63
+./test/marketplace/ERC20Permit.sol                   12             19             54
+-------------------------------------------------------------------------------------
+SUM:                                                136            416            508
+-------------------------------------------------------------------------------------
 
 ### Description
 

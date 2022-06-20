@@ -4,7 +4,6 @@ This README document explains each of the contracts in this directory and their 
 
 ## Interfaces.sol
 
-LOC: 75
 External Contracts: NA
 Libraries: NA
 
@@ -12,7 +11,6 @@ This is a conventional interfaces file. We use it to call methods in external co
 
 ## MarketPlace.sol
 
-LOC: 14
 External Contracts: NA
 Libraries: NA
 
@@ -20,7 +18,6 @@ This file can be ignored. It used only to provide the `Principals` enum to the R
 
 ## Redeemer.sol
 
-LOC: 154
 External Contracts: 
 - [`IAPWine(apwineAddr).withdraw(o, amount);`](https://github.com/APWine/apwine-smart-contracts-public/blob/6c98d14464df66ead6c1dee310f9ab9e7a612969/protocol/contracts/protocol/Controller.sol)
 - [`ITempus(tempusAddr).redeemToBacking(o, amount, 0, address(this));`](https://github.com/tempus-finance/tempus-protocol/blob/f431e821c81d8cdeae8ad433d160230563f121de/contracts/TempusController.sol)
@@ -34,11 +31,23 @@ Libraries: MarketPlace (internal), Safe (internal)
 
 # Safe.sol
 
-LOC: 58
 External Contracts: NA
 Libraries: NA
 
 This is a utility contract. It's primarily used for optimizing ERC20 functionality.
+
+### LOC Report
+
+----------------------------------------------------------------------------------
+File                                           blank        comment           code
+----------------------------------------------------------------------------------
+./test/redeemer/Redeemer.sol                      40            100            166
+./test/redeemer/Interfaces.sol                    39            101             92
+./test/redeemer/Safe.sol                          20             32             58
+./test/redeemer/MarketPlace.sol                    2              2             14
+----------------------------------------------------------------------------------
+SUM:                                             101            235            330
+----------------------------------------------------------------------------------
 
 ### Description
 
