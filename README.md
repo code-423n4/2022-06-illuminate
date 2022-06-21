@@ -7,6 +7,13 @@
 - Starts June 21, 2021 20:00 UTC
 - Ends June 26, 2021 20:00 UTC
 
+| **Contracts**    | **Link** | **LOC** | **LIBS** | **External** |
+|--------------|------|------|------|------|
+| Marketplace |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/MarketPlace.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
+| Lender |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Lender.sol)| 672 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)
+| Redeemer |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Redeemer.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
+
+
 # Introduction
 Illuminate is a fixed-rate lending protocol designed to aggregate other fixed-rate protocols' gaurunteed yields (in the form of principal tokens), providing Illuminate's users a loose gauruntee of the best rate, and deepening liquidity across the fixed-rate space.
 
@@ -80,18 +87,6 @@ As the iPT then matures, lenders can redeem their capital with a `redeem` method
 -----------------------------------
 
 # Smart Contracts 
-
-## External Contracts
-
-Below are the external contracts used by Lender.sol, Redeemer.sol and MarketPlace.sol.
-
-| **Contracts**    | **Link** | **LOC** | **LIBS** | **External** |
-|--------------|------|------|------|------|
-| Marketplace |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/MarketPlace.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
-| Lender |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Lender.sol)| 672 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)
-| Redeemer |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Redeemer.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)) |
-
------------------------------------
 
 ## Contract Descriptions / Areas of Concern
 
