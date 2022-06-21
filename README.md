@@ -53,7 +53,7 @@ iPTs can be redeemed either with a `redeem` method on Redeemer.sol, or through t
 
 General Project Docs: https://docs.illuminate.finance
 
-Contract Docs: https://docs.illuminate.finance/developers/contract 
+Contract Docs: https://docs.illuminate.finance/smart-contracts
 
 -----------------------------------
 
