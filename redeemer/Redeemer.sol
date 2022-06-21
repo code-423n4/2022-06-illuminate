@@ -6,29 +6,41 @@ import './Interfaces.sol';
 import './MarketPlace.sol';
 import './Safe.sol';
 
+/// @title Redeemer
+/// @author Sourabh Marathe, Julian Traversa, Rob Robbins
+/// @notice The Redeemer contract is used to redeem the underlying lent capital of a loan.
+/// @notice Users may redeem their ERC-5095 tokens for the underlying asset represented by that token after maturity.
 contract Redeemer {
     error Invalid(string);
     error Unauthorized();
     error Exists(string);
 
+    /// @notice address that is allowed to set the lender and marketplace
     address public admin;
+    /// @notice address used to access the MarketPlace's markets mapping
     address public marketPlace;
+    /// @notice address that custodies principal tokens for all markets
     address public lender;
 
-    /// @dev addresses of the 3rd party protocol contracts
+
+    /// @notice third party contract needed to lend on Swivel
     address public swivelAddr;
-    address public pendleAddr;
-    address public tempusAddr;
+    /// @notice third party contract needed to lend on Pendle
+    address public immutable pendleAddr;
+    /// @notice third party contract needed to lend on Tempus
+    address public immutable tempusAddr;
+    /// @notice third party contract needed to lend on APWine
     address public apwineAddr;
 
+    /// @notice emitted upon redemption of a loan
     event Redeem(uint8 principal, address indexed underlying, uint256 indexed maturity, uint256 amount);
 
     /// @notice Initializes the Redeemer contract
     /// @param l the lender contract
-    /// @param s the swivel contract
-    /// @param p the pendle contract
-    /// @param t the tempus contract
-    /// @param a the apwine contract
+    /// @param s the Swivel contract
+    /// @param p the Pendle contract
+    /// @param t the Tempus contract
+    /// @param a the APWine contract
     constructor(
         address l,
         address s,
@@ -44,11 +56,18 @@ contract Redeemer {
         apwineAddr = a;
     }
 
-    /// @notice Sets the address of the marketplace contract which contains the
-    /// addresses of all the fixed rate markets
+    /// @notice sets the admin address
+    /// @param a Address of a new admin
+    /// @return bool true if successful
+    function setAdmin(address a) external authorized(admin) returns (bool) {
+        admin = a;
+        return true;
+    }
+
+    /// @notice sets the address of the marketplace contract which contains the addresses of all the fixed rate markets
     /// @param m the address of the marketplace contract
     /// @return bool true if the address was set, false otherwise
-    function setMarketPlaceAddress(address m) external authorized(admin) returns (bool) {
+    function setMarketPlace(address m) external authorized(admin) returns (bool) {
         if (marketPlace != address(0)) {
             revert Exists('marketplace');
         }
@@ -56,7 +75,10 @@ contract Redeemer {
         return true;
     }
 
-    function setLenderAddress(address l) external authorized(admin) returns (bool) {
+    /// @notice sets the address of the lender contract which contains the addresses of all the fixed rate markets
+    /// @param l the address of the lender contract
+    /// @return bool true if the address was set, false otherwise
+    function setLender(address l) external authorized(admin) returns (bool) {
         if (lender != address(0)) {
             revert Exists('lender');
         }
@@ -64,15 +86,19 @@ contract Redeemer {
         return true;
     }
 
-    /// @notice Redeems underlying token for illuminate, apwine and tempus
-    /// protocols
+    /// @notice sets the feenominator to the given value
+    /// @param s the address of the Swivel.sol Router
+    /// @return bool true if successful
+    function setSwivel(address s) external authorized(admin) returns (bool) {
+        swivelAddr = s;
+        return true;
+    }
+
+    /// @notice redeems underlying token for Illuminate, APWine and Tempus protocols
     /// @dev Illuminate burns its tokens prior to redemption, unlike APWine and
-    /// Tempus, which withdraw their tokens after transferring the underlying to
-    /// the redeem contract. As a result, only Illuminate's redeem returns funds
+    /// Tempus, which redeem PTs to the redeemer, transferring the underlying to
+    /// this redeemer contract. Consequently, only Illuminate's redeem returns funds
     /// to the user.
-    /// @dev We can avoid a require check on the principal at the start of this
-    /// redeem because there is no common business logic executed before the
-    /// protocol specific code is executed.
     /// @param p value of a specific principal according to the Illuminate Principals Enum
     /// @param u the underlying token being redeemed
     /// @param m the maturity of the market being redeemed
@@ -87,46 +113,44 @@ contract Redeemer {
         // Get the address of the principal token being redeemed
         address principal = IMarketPlace(marketPlace).markets(u, m, p);
 
-        // Get the amount of tokens to be redeemed from the principal token
-        uint256 amount = IErc20(principal).balanceOf(lender);
-
-        // Transfer the underlying token to the redeem contract if it is not illuminate
-        if (p != uint8(MarketPlace.Principals.Illuminate)) {
-            Safe.transferFrom(IErc20(u), lender, address(this), amount);
-        }
-
-        if (p == uint8(MarketPlace.Principals.Apwine)) {
-            // Redeem the underlying token from APWine to illuminate
-            IAPWine(apwineAddr).withdraw(o, amount);
-        } else if (p == uint8(MarketPlace.Principals.Tempus)) {
-            // Redeem the tokens from the tempus contract to illuminate
-            ITempus(tempusAddr).redeemToBacking(o, amount, 0, address(this));
-        } else if (p == uint8(MarketPlace.Principals.Illuminate)) {
+        if (p == uint8(MarketPlace.Principals.Illuminate)) {
             // Get Illuminate's principal token
-            // TODO: Check this in audit, I don't think this is right
-            IZcToken token = IZcToken(principal);
-
+            IERC5095 token = IERC5095(principal);
+            // Get the amount of tokens to be redeemed from the sender
+            uint256 amount = token.balanceOf(msg.sender);
             // Make sure the market has matured
             if (block.timestamp < token.maturity()) {
                 revert Invalid('not matured');
             }
-
-            // Burn the prinicipal token from illuminate
-            // TODO: check amount. Shouldn't it be the balance held by msg.sender?
+            // Burn the prinicipal token from Illuminate
             token.burn(o, amount);
+            // Transfer the original underlying token back to the user
+            Safe.transferFrom(IERC20(u), lender, address(this), amount);
 
-            // Transfer the original underlying token back to the redeemer
-            Safe.transferFrom(IErc20(u), lender, address(this), amount);
-        } else {
-            revert Invalid('principal');
+            emit Redeem(0, u, m, amount);
         }
+        else {
+            // Get the amount of tokens to be redeemed from the principal token
+            uint256 amount = IERC20(principal).balanceOf(lender);
+            // Transfer the principal token from the lender contract to here
+            Safe.transferFrom(IERC20(u), lender, address(this), amount);
 
-        emit Redeem(0, u, m, amount);
+            if (p == uint8(MarketPlace.Principals.Apwine)) {
+                // Redeem the underlying token from APWine to Illuminate
+                IAPWine(apwineAddr).withdraw(o, amount);
+            } else if (p == uint8(MarketPlace.Principals.Tempus)) {
+                // Redeem the tokens from the Tempus contract to Illuminate
+                ITempus(tempusAddr).redeemToBacking(o, amount, 0, address(this));
+            } else {
+                revert Invalid('principal');
+            }
+            emit Redeem(0, u, m, amount);
+        }
 
         return true;
     }
 
-    /// @dev redeem method for swivel, yield, element and notional. This method redeems all
+    /// @notice redeem method for Swivel, Yield, Element and Notional protocols
     /// @param p value of a specific principal according to the Illuminate Principals Enum
     /// @param u underlying token being redeemed
     /// @param m maturity of the market being redeemed
@@ -149,11 +173,11 @@ contract Redeemer {
             revert Invalid('principal');
         }
 
-        // The amount redeemed should be the balance of the principal token held by the illuminate contract
-        uint256 amount = IErc20(principal).balanceOf(lender);
+        // The amount redeemed should be the balance of the principal token held by the Illuminate contract
+        uint256 amount = IERC20(principal).balanceOf(lender);
 
-        // Transfer the principal token from the marketplace contract to here
-        Safe.transferFrom(IErc20(principal), lender, address(this), amount);
+        // Transfer the principal token from the lender contract to here
+        Safe.transferFrom(IERC20(principal), lender, address(this), amount);
 
         if (p == uint8(MarketPlace.Principals.Swivel)) {
             // Redeems zc tokens to the sender's address
@@ -170,15 +194,14 @@ contract Redeemer {
         }
 
         emit Redeem(p, u, m, amount);
-
         return true;
     }
 
-    /// @notice redeem method signature for pendle
+    /// @notice redeem method signature for Pendle
     /// @param p value of a specific principal according to the Illuminate Principals Enum
     /// @param u underlying token being redeemed
     /// @param m maturity of the market being redeemed
-    /// @param i forge id used by pendle to redeem the underlying token
+    /// @param i forge id used by Pendle to redeem the underlying token
     /// @return bool true if the redemption was successful
     function redeem(
         uint8 p,
@@ -186,13 +209,13 @@ contract Redeemer {
         uint256 m,
         bytes32 i
     ) public returns (bool) {
-        // Check the principal is pendle
+        // Check the principal is Pendle
         if (p != uint8(MarketPlace.Principals.Pendle)) {
             revert Invalid('principal');
         }
 
         // Get the principal token that is being redeemed by the user
-        IErc20 token = IErc20(IMarketPlace(marketPlace).markets(u, m, p));
+        IERC20 token = IERC20(IMarketPlace(marketPlace).markets(u, m, p));
 
         // Get the balance of tokens to be redeemed by the user
         uint256 amount = token.balanceOf(lender);
@@ -200,17 +223,20 @@ contract Redeemer {
         // Transfer the user's tokens to the redeem contract
         Safe.transferFrom(token, lender, address(this), amount);
 
-        // Redeem the tokens from the pendle contract
+        // Redeem the tokens from the Pendle contract
         IPendle(pendleAddr).redeemAfterExpiry(i, u, m);
+        
+        emit Redeem(p, u, m, amount);
         return true;
     }
 
-    /// @dev redeem method signature for sense
+    /// @notice redeem method signature for Sense
     /// @param p value of a specific principal according to the Illuminate Principals Enum
     /// @param u underlying token being redeemed
     /// @param m maturity of the market being redeemed
-    /// @param d sense contract that splits the loan's prinicpal and yield
-    /// @param o sense contract that [d] calls into to adapt the underlying to sense
+    /// @param d Sense contract that splits the loan's prinicpal and yield
+    /// @param o Sense contract that [d] calls into to adapt the underlying to Sense
+    /// @return bool true if the redemption was successful
     function redeem(
         uint8 p,
         address u,
@@ -218,13 +244,13 @@ contract Redeemer {
         address d,
         address o
     ) public returns (bool) {
-        // Check the principal is sense
+        // Check the principal is Sense
         if (p != uint8(MarketPlace.Principals.Sense)) {
             revert Invalid('principal');
         }
 
         // Get the principal token for the given market
-        IErc20 token = IErc20(IMarketPlace(marketPlace).markets(u, m, p));
+        IERC20 token = IERC20(IMarketPlace(marketPlace).markets(u, m, p));
 
         // Get the balance of tokens to be redeemed by the user
         uint256 amount = token.balanceOf(lender);
@@ -232,16 +258,14 @@ contract Redeemer {
         // Transfer the user's tokens to the redeem contract
         Safe.transferFrom(token, lender, address(this), amount);
 
-        // Redeem the tokens from the sense contract
+        // Redeem the tokens from the Sense contract
         ISense(d).redeem(o, m, amount);
 
         emit Redeem(p, u, m, amount);
-
         return true;
     }
 
-    /// @notice implements the redeem method for the contract to fulfill the
-    /// ERC-5095 interface
+    /// @notice implements the redeem method for the contract to fulfill the ERC-5095 interface
     /// @param u address of the underlying asset
     /// @param m maturity of the market
     /// @param f address from where the underlying asset will be burned
@@ -256,7 +280,7 @@ contract Redeemer {
         uint256 a
     ) public authorized(IMarketPlace(marketPlace).markets(u, m, 0)) returns (bool) {
         // Get the principal token for the given market
-        IZcToken pt = IZcToken(IMarketPlace(marketPlace).markets(u, m, 0));
+        IERC5095 pt = IERC5095(IMarketPlace(marketPlace).markets(u, m, 0));
 
         // Make sure the market has matured
         if (block.timestamp < pt.maturity()) {
@@ -267,10 +291,12 @@ contract Redeemer {
         pt.burn(f, a);
 
         // Transfer the original underlying token back to the user
-        Safe.transfer(IErc20(u), t, a);
+        Safe.transfer(IERC20(u), t, a);
         return true;
     }
 
+    /// @notice ensures that only a certain address can call the function
+    /// @param a address that msg.sender must be to be authorized
     modifier authorized(address a) {
         if (msg.sender != a) {
             revert Unauthorized();
