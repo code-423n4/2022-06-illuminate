@@ -1,9 +1,8 @@
 # Illuminate contest details
-TODO: Update this section
-- $67,500 worth of ETH main award pot
-- $7,500 worth of ETH gas optimization award pot
+- $50,000 worth of ETH main award pot
+- $5,000 worth of ETH gas optimization award pot
 - Join [C4 Discord](https://discord.gg/EY5dvm3evD) to register
-- Submit findings [using the C4 form](https://code423n4.com/2021-09-swivel-contest/submit)
+- Submit findings [using the C4 form](https://code423n4.com/2022-06-illuminate-contest/submit) // Check links
 - [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
 - Starts June 21, 2021 20:00 UTC
 - Ends June 26, 2021 20:00 UTC
@@ -13,7 +12,11 @@ Illuminate is a fixed-rate lending protocol designed to aggregate other fixed-ra
 
 Most simply described, Illuminate aggregates and wraps principal tokens with similar maturities and underlying assets into one single (meta) principal token (iPT).
 
-A wrapped / meta principal token (iPT) in tandem with the utilization of a YieldSpace AMM (out of scope for this audit) provide an on-chain gauruntee of the "best rate" as arbitrageurs mint & sell iPTs should any integrated protocol's principal tokens decrease in price beyond the price of the meta-PT.
+A front-end interface provides an aggregated _best rate_ by purchasing and wrapping external tokens.
+
+While the wrapped / meta principal token (iPT) is traded on a secondary market through a YieldSpace AMM (out of scope for this audit) providing an on-chain gauruntee of the _best rate_. 
+
+As arbitrageurs can easily purchase external PTs -> mint & sell iPTs, variance in external principal token prices is reduced, while a secondary market for iPTs can be confident it provides the best rate and depth.
 
 ## Main Participant Interactions
 
