@@ -84,9 +84,9 @@ Below are the external contracts used by Lender.sol, Redeemer.sol and MarketPlac
 
 | **Contracts**    | **Link** | **LOC** | **LIBS** | **External** |
 |--------------|------|------|------|------|
-| Marketplace |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Swivel.sol)| 280 | [Safe.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Abstracts.sol) | [External.md]([https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)) |
-| Lender |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/MarketPlace.sol)| 672 | [Safe.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/Abstracts.sol), [Element.sol], [Swivel.sol] | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)
-| Redeemer |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/VaultTracker.sol)| 280 | [Safe.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/Abstracts.sol) | [External.md]([https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)) |
+| Marketplace |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/MarketPlace.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
+| Lender |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Lender.sol)| 672 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)
+| Redeemer |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Redeemer.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)) |
 
 -----------------------------------
 
