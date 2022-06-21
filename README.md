@@ -9,9 +9,9 @@
 
 | **Contracts**    | **Link** | **LOC** | **LIBS** | **External** |
 |--------------|------|------|------|------|
-| Marketplace |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/MarketPlace.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
-| Lender |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Lender.sol)| 672 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)
-| Redeemer |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Redeemer.sol)| 280 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
+| Marketplace |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/MarketPlace.sol)| 253 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/marketplace/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
+| Lender |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Lender.sol)| 738 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/lender/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md)
+| Redeemer |[Link](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Redeemer.sol)| 306 | [Safe.sol](https://github.com/code-423n4/2022-06-illuminate/blob/main/redeemer/Safe.sol) | [External.md](https://github.com/code-423n4/2022-06-illuminate/blob/main/external.md) |
 
 
 # Introduction
