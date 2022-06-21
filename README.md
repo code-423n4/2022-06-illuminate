@@ -86,9 +86,7 @@ As the iPT then matures, lenders can redeem their capital with a `redeem` method
 
 -----------------------------------
 
-# Smart Contracts 
-
-## Contract Descriptions / Areas of Concern
+# Contract Descriptions / Areas of Concern
 
 ## **Lender:**
 
