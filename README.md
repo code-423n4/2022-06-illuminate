@@ -9,38 +9,75 @@ TODO: Update this section
 - Ends October 6, 2021 23:59 UTC
 
 # Introduction
-TODO: Julian will write this out
+Illuminate is a fixed-rate lending protocol designed to aggregate other fixed-rate protocols' gaurunteed yields (in the form of principal tokens), providing Illuminate's users a loose gauruntee of the best rate, and deepening liquidity across the fixed-rate space.
 
-General Project Docs:https://docs.illuminate.finance
+Most simply described, Illuminate aggregates and wraps principal tokens with similar maturities and underlying assets into one single (meta) principal token (iPT).
+
+A wrapped / meta principal token (iPT) in tandem with the utilization of a YieldSpace AMM (out of scope for this audit) provide an on-chain gauruntee of the "best rate" as arbitrageurs mint & sell iPTs should any integrated protocol's principal tokens decrease in price beyond the price of the meta-PT.
+
+## Main Participant Interactions
+
+**On-Chain lenders:** Purchase iPTs through Marketplace.sol which serves as a router for a secondary market's YieldSpace AMM.
+
+**Off-Chain lenders:** `lend` on Lender.sol, with the assumption an off-chain interface can identify which principal token to directly purchase and then input the correct parameters.
+
+**Arbitrageurs:** Purchase external principal tokens, `mint` iPTs on Lender.sol, and then sell iPTs through the Marketplace.sol which acts as a router.
+
+**Redemption:** 
+
+iPT redemption itself is straightforward as users redeem 1 iPT for 1 underlying token upon maturity.
+
+This first requires the redemption of any externally wrapped PTs that Lender.sol may hold. These external PT `redeem` methods are public, however it is expected that the admins will likely execute these leaving the users solely responsible for redeeming their iPTs.
+
+iPTs can be redeemed either with a `redeem` method on Redeemer.sol, or through the authorized iPT [EIP-5095](https://github.com/ethereum/EIPs/pull/5095) `redeem` method.
+
+**Admins:**
+- Set up contracts
+- Create markets
+- Retain emergency withdraw privileges (72 hr delay)
+- Set fees
+
+-----------------------------------
+
+## Links:
+
+General Project Docs: https://docs.illuminate.finance
 
 Contract Docs: https://docs.illuminate.finance/developers/contract 
 
+-----------------------------------
 
-### **Lend and Redeem Path:**
+## Other Information / Interaction Paths 
 
+#### Setting Up Markets
 A market, defined by an underlying asset (`address`) and a maturity (`uint256`) is created by the admin via the MarketPlace contract. From there, the admin approves the Lender for all principal tokens via the Lender contract.
 
-Next, a user can lend capital for that market by calling `lend`. Depending on the principal he passes to `lend`, he will have to provide different parameters. When `lend` is called, his underlying asset is transferred to the Lender. From there, the Lender converts the underlying asset into principal tokens for the chosen principal. Finally, the `lend` operation ends by minting meta-principal tokens to the user. These tokens will represent his loan in this particular market.
+#### Lending Specifics
+An off-chain interface can lend capital in by utilizing an off-chain API to identify the protocol with the best rate, and then calling `lend` with the returned parameters.
 
-Once the loan has matured, the admin will call `redeem` on all principals servicing a given market. These `redeem` methods will receive the owed principal tokens from the Lender contract and call the redemption functions for each principal. At that point, they will be holding the originally lent capital plus interest.
+When `lend` is called, underlying assets are transferred to `Lender.sol`. From there, `Lender.sol` purchases an external protocol's principal tokens and mints the user (msg.sender) an equivalent amount of wrapped/meta principal tokens (iPTs). 
 
-Next, a user can redeem his owed capital by calling `redeem` with Illuminate's principal. This will result in his meta-principal tokens being burned, and a proportional amount of underlying assets being returned to him.
+#### Redemption Specifics
+As external principal tokens mature, the admin (or others) `redeem` the principal tokens using `Redeemer.sol`.
 
-### ** metaPrincipal token [ERC5095](https://github.com/ethereum/EIPs/pull/5095) functionality:**
+`redeem` methods transfer held PTs from `Lender.sol` to `Redeemer.sol` and then operate the appropriate external redemption methods. Should the iPT mature _after_ all external PTs mature, each iPT will then have equivalent backing of underlying tokens.
 
-The meta-principal token represents a user's owed capital in a given market, defined by an underlying asset and maturity. Meta-principal tokens are minted to users when they call `lend`. The number of tokens they own in a given market indicates how much underlying assets they are entitled to when the market matures.
-
-A meta-principal token is minted for each market.
-
-The meta-principal token conforms to the ERC5095 interface. The purpose of this interface is to indicate ownership of an underlying ERC20 at a future date. In the case of Illuminate, this is used to represent capital that has been lent. 
-
-By having a common token accross all principals for a given market, Illuminate enables arbitrage across rates, ensuring that users get access to the best possible rate. In addition, having a common token for a market allows it to be traded for its underlying via YieldSpace pools.
+As the iPT then matures, lenders can redeem their capital with a `redeem` method on Redeemer.sol, or through the authorized iPT [EIP-5095](https://github.com/ethereum/EIPs/pull/5095) `redeem` method.
 
 # Smart Contracts 
 
 ## External Contracts
 
 Below are the external contracts used by Lender.sol, Redeemer.sol and MarketPlace.sol.
+
+| **Contracts**    | **Link** | **LOC** | **LIBS** | **External** |
+|--------------|------|------|------|------|
+| Lender       |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Swivel.sol)| 486 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Abstracts.sol), [Hash.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Hash.sol), [Sig.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Sig.sol) | [CToken.sol](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) |
+| Marketplace  |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/MarketPlace.sol)| 259 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/Abstracts.sol) |
+| VaultTracker |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/VaultTracker.sol)| 251 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/Abstracts.sol) | [CToken.sol](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) |
+
+
+
 
 ### Lender
 
