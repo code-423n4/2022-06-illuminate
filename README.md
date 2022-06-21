@@ -15,13 +15,13 @@
 
 
 # Introduction
-Illuminate is a fixed-rate lending protocol designed to aggregate other fixed-rate protocols' gaurunteed yields (in the form of principal tokens), providing Illuminate's users a loose gauruntee of the best rate, and deepening liquidity across the fixed-rate space.
+Illuminate is a fixed-rate lending protocol designed to aggregate other fixed-rate protocols' guaranteed yields (in the form of principal tokens), providing Illuminate's users a loose guarantee of the best rate, and deepening liquidity across the fixed-rate space.
 
 Most simply described, Illuminate aggregates and wraps principal tokens with similar maturities and underlying assets into one single (meta) principal token (iPT).
 
 A front-end interface provides an aggregated _best rate_ by purchasing and wrapping external tokens.
 
-While the wrapped / meta principal token (iPT) is traded on a secondary market through a YieldSpace AMM (out of scope for this audit) providing an on-chain gauruntee of the _best rate_. 
+While the wrapped / meta principal token (iPT) is traded on a secondary market through a YieldSpace AMM (out of scope for this audit) providing an on-chain guarantee of the _best rate_. 
 
 As arbitrageurs can easily purchase external PTs -> mint & sell iPTs, variance in external principal token prices is reduced, while a secondary market for iPTs can be confident it provides the best rate and depth.
 
