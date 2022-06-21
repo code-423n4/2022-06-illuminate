@@ -1,11 +1,11 @@
 # Illuminate contest details
-- $50,000 worth of ETH main award pot
-- $5,000 worth of ETH gas optimization award pot
+- $50,000 USDC main award pot
+- $5,000 USDC gas optimization award pot
 - Join [C4 Discord](https://discord.gg/EY5dvm3evD) to register
 - Submit findings [using the C4 form](https://code4rena.com/contests/2022-06-illuminate-contest/submit)
 - [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
-- Starts June 21, 2021 20:00 UTC
-- Ends June 26, 2021 20:00 UTC
+- Starts June 21, 2022 20:00 UTC
+- Ends June 26, 2022 19:59 UTC
 
 | **Contracts**    | **Link** | **LOC** | **LIBS** | **External** |
 |--------------|------|------|------|------|
