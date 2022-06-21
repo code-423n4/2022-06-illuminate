@@ -72,9 +72,9 @@ Below are the external contracts used by Lender.sol, Redeemer.sol and MarketPlac
 
 | **Contracts**    | **Link** | **LOC** | **LIBS** | **External** |
 |--------------|------|------|------|------|
-| Lender       |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Swivel.sol)| 486 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Abstracts.sol), [Hash.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Hash.sol), [Sig.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Sig.sol) | [CToken.sol](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) |
-| Marketplace  |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/MarketPlace.sol)| 259 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/Abstracts.sol) |
-| VaultTracker |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/VaultTracker.sol)| 251 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/Abstracts.sol) | [CToken.sol](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) |
+| Marketplace |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Swivel.sol)| 280 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Abstracts.sol), [Hash.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Hash.sol), [Sig.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/swivel/Sig.sol) | [CToken.sol](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) |
+| Lender |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/MarketPlace.sol)| 672 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/marketplace/Abstracts.sol) |
+| Redeemer |[Link](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/VaultTracker.sol)| 280 | [Abstracts.sol](https://github.com/Swivel-Finance/gost/blob/v2/test/vaulttracker/Abstracts.sol) | [CToken.sol](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) |
 
 
 
