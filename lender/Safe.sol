@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 // Adapted from: https://github.com/Rari-Capital/solmate/blob/main/src/utils/SafeTransferLib.sol
 
-// TODO audit for which methods are needed
-
 pragma solidity 0.8.13;
 
-import {IErc20} from './Interfaces.sol';
+import {IERC20} from './Interfaces.sol';
 
 /**
   @notice Safe ETH and ERC20 transfer library that gracefully handles missing return values.
@@ -18,7 +16,7 @@ library Safe {
     /// @param t To address
     /// @param a Amount being transferred
     function transfer(
-        IErc20 e,
+        IERC20 e,
         address t,
         uint256 a
     ) internal {
@@ -46,7 +44,7 @@ library Safe {
     /// @param t To address
     /// @param a Amount being transferred
     function transferFrom(
-        IErc20 e,
+        IERC20 e,
         address f,
         address t,
         uint256 a
@@ -111,7 +109,7 @@ library Safe {
     }
 
     function approve(
-        IErc20 token,
+        IERC20 token,
         address to,
         uint256 amount
     ) internal {
