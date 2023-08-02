@@ -1,0 +1,1071 @@
+==============================================================
+Guild: Code4rena
+Channel: ARCHIVE-Q2-2022 / ☑illuminate-jun21
+==============================================================
+
+[06/15/2022 10:53 PM] kartoonjoy
+👋 Hello and welcome to the contest channel for the $55K USDC **Illuminate** contest!
+
+📆 Contest opens 06/21/2022 8:00 PM (20:00 UTC) and runs through 06/26/2022 7:59 PM (19:59 UTC) (5 days).
+
+Please give a warm welcome to the Illuminate team, particularly @sourabh, @jankisa, @rob_rob, @Julian | Illuminate, who will be available for questions either here in the channel or via DM.
+
+We'll be posting relevant links, documentation, etc. here, so if you intend to participate in this contest, consider enabling notifications for this channel. 🐺 ⏰
+
+Contest Page: https://code4rena.com/contests/2022-06-illuminate-contest
+
+{Embed}
+https://code4rena.com/contests/2022-06-illuminate-contest
+Code4rena Illuminate contest
+$55,000 USDC
+21 June 2022—26 June 2022
+Code4rena - ARCHIVE-Q2-2022 - ☑illuminate-jun21 [986762719942291476].txt_Files/C4-banner-7C19B.png
+
+
+[06/16/2022 3:15 AM] Julian | Illuminate#0001
+!! Hey hey guys!
+
+We'll be updating our repo for everyone to inspect and getting all pertinent info in over the next couple days
+
+{Reactions}
+🥂 (12) 
+
+[06/21/2022 7:59 PM] Julian | Illuminate#0001
+Starting in T-2 minutes!
+
+We spent a good bit trying to be verbose in our contest repo, but feel free to use our docs as a great resource as well!
+
+https://docs.illuminate.finance
+
+{Reactions}
+👀 
+
+[06/21/2022 7:59 PM] Julian | Illuminate#0001
+The litepaper is ~50% complete while the smart contract documentation itself is completely buttoned up! If you see any mistakes / anything interesting or just have questions whatsoever feel free to reach out to me or @sourabh  personally!
+
+{Reactions}
+👍 (9) 
+
+[06/22/2022 1:21 PM] ak19966
+Hi
+
+
+[06/22/2022 1:22 PM] ak19966
+I have doubt in the important section .. it's is mentioned like this
+
+
+[06/22/2022 1:22 PM] ak19966
+IMPORTANT NOTE:
+When it comes to input sanitization, we err on the side of having external interfaces validate their input, rather than socializing costs to do checks such as:
+
+Checking for address(0)
+Checking for input amounts of 0
+Checking to ensure the protocol enum matches the parameters provided
+Any similar input sanitization
+
+
+[06/22/2022 1:22 PM] ak19966
+Can you pls add more infor on this..
+
+
+[06/22/2022 1:23 PM] ak19966
+To me.. i understand like the validation should be done in the dapp builder
+
+
+[06/22/2022 1:23 PM] ak19966
+So.. the contract will not be responsible for any of the invalid input
+
+
+[06/22/2022 1:23 PM] ak19966
+Is that it convey??
+
+
+[06/22/2022 1:23 PM] ak19966
+Pls clarify
+
+
+[06/22/2022 1:54 PM] ak19966
+And one  more
+
+
+[06/22/2022 1:56 PM] ak19966
+So.. i understand like liquidity should be there to unstake the stakend tokens..  will it have any use...user going to get one and add the same thing again inside the staking.. pls explain
+
+
+[06/22/2022 8:38 PM] kulk0
+Are there any tests for the contracts?
+
+
+[06/23/2022 3:55 AM] Julian | Illuminate#0001
+Yeah thats correct! We generally want to place the validation of this sort of thing on the front-end rather than the smart contracts
+
+{Reactions}
+💯 
+
+[06/23/2022 3:57 AM] Julian | Illuminate#0001
+im not 100% on your question here though, can you clarify for me a bit?
+
+
+[06/23/2022 3:57 AM] Julian | Illuminate#0001
+Which problem was solved with implementing Curve?
+
+
+[06/23/2022 3:58 AM] ak19966
+Oh.. sorry.. i posted in wrong window.. let me delete it.. thanks.
+
+{Reactions}
+OK 
+
+[06/23/2022 3:58 AM] Julian | Illuminate#0001
+We use a custom testing suite that is super similar to solmate, where the contracts directly interface with GETH
+
+
+[06/23/2022 3:58 AM] Julian | Illuminate#0001
+Called "GOST", you can find the unit tests for all the contracts in the /test folder, with the most recent changes in this branch, and example here: https://github.com/Swivel-Finance/gost/blob/illuminate/test/marketplace/marketplace.go
+
+{Embed}
+https://github.com/Swivel-Finance/gost/blob/illuminate/test/marketplace/marketplace.go
+gost/marketplace.go at illuminate · Swivel-Finance/gost
+Smart contract testing with Geth via the Golang ABIGEN - gost/marketplace.go at illuminate · Swivel-Finance/gost
+Code4rena - ARCHIVE-Q2-2022 - ☑illuminate-jun21 [986762719942291476].txt_Files/gost-257D4
+
+
+[06/23/2022 4:08 AM] p12473
+Is it fair to say that any issues pertaining to the lack of input validation will be considered invalid?
+
+
+[06/23/2022 4:08 AM] p12473
+what about privileged functions being abused? I assume that's out of scope as well.
+
+
+[06/23/2022 4:18 AM] Julian | Illuminate#0001
+lol yeah I'd personally say theyd be invalid. 
+
+Stuff that isnt really a vulnerability and where errors can be prevented by front ends, really I think the best example is if the `a` amount passed is 0
+
+{Reactions}
+👍 (4) 
+
+[06/23/2022 10:29 AM] fufanuu
+what framework does this project use, seems to just be contracts and missing most of everything one needs to actually work w/ the project in testing tools, etc
+
+
+[06/23/2022 10:31 AM] fufanuu
+so you're specifically leaving these Validation Errors in the contracts?
+
+
+[06/23/2022 10:31 AM] fufanuu
+not recommended
+
+{Reactions}
+➕ (7) 
+
+[06/23/2022 12:08 PM] kenzoagada
+I haven't looked at Illuminate yet,
+but generally speaking it's a matter of opinion and design
+
+
+[06/23/2022 12:09 PM] kenzoagada
+Also when these kind of errors are reported it can generate a ton of reports which are not really useful which require to validate every thing in the system
+
+
+[06/23/2022 2:57 PM] Deleted User
+there were a couple new commits after contest started so previous submissions may be pointing to incorrect line numbers - just a heads up for anyone reviewing reports
+
+
+[06/23/2022 3:59 PM] 0x1f8b
+Always use a permalink
+
+{Reactions}
+👍 (2) 
+
+[06/23/2022 6:30 PM] m4rio.eth
+hey guys any reason for this?
+
+
+[06/23/2022 6:30 PM] m4rio.eth
+
+
+{Attachments}
+Code4rena - ARCHIVE-Q2-2022 - ☑illuminate-jun21 [986762719942291476].txt_Files/Unknown_SS_48-1736F.png
+
+
+[06/23/2022 6:31 PM] m4rio.eth
+is this to discourage the auditors or?
+
+{Reactions}
+😂 (10) 👎 
+
+[06/23/2022 8:02 PM] m4rio.eth
+also, i can not find where IYield to which contract it refers too
+
+
+[06/23/2022 8:02 PM] m4rio.eth
+can you help a poor auditor, pls?
+
+
+[06/23/2022 8:05 PM] m4rio.eth
+is dis one?
+https://github.com/tintinweb/smart-contract-sanctuary-ethereum/blob/master/contracts/kovan/c5/C5830B04599eA95E8a2612492D87805A8c3610fd_Pool.sol
+
+{Embed}
+https://github.com/tintinweb/smart-contract-sanctuary-ethereum/blob/master/contracts/kovan/c5/C5830B04599eA95E8a2612492D87805A8c3610fd_Pool.sol
+smart-contract-sanctuary-ethereum/C5830B04599eA95E8a2612492D87805A8...
+🐦🌴🌴🌴🦕 A home for ethereum smart contracts. 🏠. Contribute to tintinweb/smart-contract-sanctuary-ethereum development by creating an account on GitHub.
+Code4rena - ARCHIVE-Q2-2022 - ☑illuminate-jun21 [986762719942291476].txt_Files/smart-contract-sanctuary-ethereum-208C2
+
+
+[06/23/2022 8:10 PM] bearprince
+Isn't this generally bad practice in programming in general
+
+
+[06/23/2022 8:10 PM] m4rio.eth
+yes that's why i asked if it was on purpose
+
+{Reactions}
+👎 
+
+[06/23/2022 8:10 PM] m4rio.eth
+😬 or maybe there is another reason why that!
+
+
+[06/23/2022 8:11 PM] m4rio.eth
+for example i can't even search for m in the vs code
+
+
+[06/23/2022 8:11 PM] m4rio.eth
+i mean i can but takes ages 😆
+
+
+[06/23/2022 8:12 PM] kartoonjoy
+Hi @💼sponsors, anyone available to respond to the wardens?
+
+{Reactions}
+👍 
+
+[06/23/2022 8:13 PM] m4rio.eth
+also another good practice when you want to get your code audited: include the dependencies, like:
+this is the contract X, Y, Z we are interacting with
+
+
+[06/23/2022 8:13 PM] m4rio.eth
+it saves time for the auditor. Your purpose is to let to the auditor more time to look on the flows/code and not to search for the dependencies
+
+
+[06/23/2022 8:13 PM] Julian | Illuminate#0001
+Hey guys! I'm traveling right now but should be online for questions in about an hour!
+
+{Reactions}
+pepeSalute thankyou 
+
+[06/23/2022 8:14 PM] Julian | Illuminate#0001
+Have you tried taking a look at the linked external.md files?
+
+
+[06/23/2022 8:14 PM] Julian | Illuminate#0001
+All the external contracts are linked there :nodders:
+
+
+[06/23/2022 8:14 PM] m4rio.eth
+rekted
+
+
+[06/23/2022 8:14 PM] m4rio.eth
+:pepeCryRunning: 🔫
+
+
+[06/23/2022 8:15 PM] m4rio.eth
+awesome yea, they are there! thank you ser!
+
+
+[06/23/2022 8:20 PM] sourabh.
+What are you referring to specifically here?
+
+
+[06/23/2022 8:20 PM] m4rio.eth
+i mean the naming of the parameters
+
+
+[06/23/2022 8:21 PM] sourabh.
+I don't think he's referring to all validation errors. For example, in cases where a malicious user could circumvent the front end and pass insecure parameters, we definitely want to address those problems
+
+
+[06/23/2022 8:22 PM] sourabh.
+I see, yes. That's just a naming convention we have for parameters. We feel that the natspec should indicate the purpose of the parameter, so a shorter name uses less space. I can sympathize with it being grating if one is not used to it!
+
+
+[06/23/2022 8:24 PM] m4rio.eth
+quite hard to follow them through the contract :pepeCryRunning:
+
+
+[06/23/2022 8:26 PM] sourabh.
+Apologies for that -- hopefully since parameters are limited to methods they don't cause too many headaches. The attributes should be identified by full words
+
+{Reactions}
+pepeSalute 
+
+[06/23/2022 9:32 PM] zer0dot
+~~I imagine admin rugging is not part of scope?~~ Nvm, was explicitly stated in the readme about the withdraw-- my mistake!
+
+
+[06/23/2022 10:07 PM] fufanuu
+rgr thanks
+
+
+[06/23/2022 10:32 PM] rotcivegaf
+WHY WHY!!!!
+
+
+[06/23/2022 10:49 PM] cloudellie
+@🐺wardens while I can appreciate your frustration if you're hitting up against challenges here, would remind you to please keep your comments here kind & respectful, per our CoC. 
+Let's keep the discussion fact-based and constructive. :hi5:
+
+{Reactions}
+❤️ (16) 💯 (5) 
+
+[06/23/2022 11:06 PM] dmitriia
+Actually I think it is valid non-critical point for QA. Appropriate naming is a best practice, often underappreciated a bit, best practices are basic part of QA scope.
+
+{Reactions}
+👍 
+
+[06/23/2022 11:07 PM] 0x1f8b
+@m4rio.eth my two cents, maybe you can use the QA for say respectfully what do you think it's wrong instead of use this chat. 🤔 (I think that the code style is non-critical)
+
+
+[06/23/2022 11:08 PM] m4rio.eth
+i was about to write a big message explaining a bit the responsibility of an auditor from multiple points of view and not only finding the high critical bugs. But i guess it's pointless.
+
+{Reactions}
+🐺 💜 
+
+[06/23/2022 11:08 PM] m4rio.eth
+was a bit of a joke as well 😛
+
+
+[06/23/2022 11:08 PM] m4rio.eth
+good luck and i ll stop spamming the thread
+
+
+[06/23/2022 11:09 PM] cloudellie
+To be clear, my comment was not directed specifically at any one person. Clear, direct feedback from all you smart people is exactly what sponsors come here for, and we encourage it. Just want to keep this channel discussion constructive is all.
+
+{Reactions}
+👍 (3) 
+
+[06/23/2022 11:22 PM] Julian | Illuminate#0001
+^^ We've had a ton of our own internal discussions before about naming (personally i agree with yall but thats beside the point lol), and essentially are erring on the side of our most experienced long term dev where the claim is that the larger the codebase gets over time, the more optimization for code readability over variable readability becomes important
+
+
+[06/24/2022 1:40 AM] ligaratus_
+@Julian | Illuminate sent u a DM 😉
+
+{Reactions}
+👀 
+
+[06/24/2022 2:15 AM] chomtana
+Admin rugging is very easy
+
+
+[06/24/2022 2:39 AM] 0xdjango
+Did y’all create the ERC5095 standard? The only pertinent google result seems to take me to @Julian | Illuminate  GitHub lol
+
+
+[06/24/2022 2:44 AM] zer0dot
+As with many protocols
+
+
+[06/24/2022 3:56 AM] Julian | Illuminate#0001
+It was a group effort across almost all the protocols in the integration :pepeWink:
+
+
+[06/24/2022 3:58 AM] Julian | Illuminate#0001
+largely led by me and alberto from yield, but we've got pretty much everyone working on the standard (see the eth magicians thread + the official EIP pull, but we also have a contributors discord if you wanna come hang out 😉 : https://discord.gg/gcmfAy3V)
+
+https://ethereum-magicians.org/t/eip-5095-principal-token-standard/9259
+
+https://github.com/ethereum/EIPs/pull/5095
+
+{Reactions}
+nice 
+
+[06/24/2022 4:05 AM] Julian | Illuminate#0001
+Yeah, just how early releases *should* work imo
+
+
+[06/24/2022 4:06 AM] Julian | Illuminate#0001
+Especially when youre integrated with so many external protocols
+
+
+[06/24/2022 4:06 AM] zer0dot
+yup, as long as there are proper safeguards
+
+
+[06/24/2022 4:06 AM] zer0dot
+you don't want to end up like Axie :oh:
+
+
+[06/24/2022 4:06 AM] Julian | Illuminate#0001
+If there are any issues, there just gotta be authed routes to try to recover funds or stop exposure to one of the integrations
+
+
+[06/24/2022 4:06 AM] Julian | Illuminate#0001
+:LUL:  yeerp exactly
+
+
+[06/24/2022 1:25 PM] stermi
+do you have any hardhat/forge tests available? I'll be honest it's not easy at least for me to create PoC with  `gost`, I have never used it and don't know the `go` language
+
+
+[06/24/2022 1:43 PM] Julian | Illuminate#0001
+@sourabh set up a handful in foundry but unsure how comprehensive they are, I'll give a quick ping
+
+
+[06/24/2022 1:48 PM] stermi
+that would help a lot, I don't have to setup all the initializations by myself
+
+
+[06/24/2022 1:50 PM] sourabh.
+We have not set up integration tests on foundry yet
+
+
+[06/24/2022 1:59 PM] stermi
+hardhat?
+
+
+[06/25/2022 1:20 AM] zer0dot
+Hey there-- any sponsor available for a chat?
+
+
+[06/25/2022 2:37 AM] kenzoagada
+Dev in meetings: "the larger the codebase gets over time, the more optimization for code readability over variable readability becomes important"
+
+
+[06/25/2022 2:37 AM] kenzoagada
+Dev in home:
+
+
+[06/25/2022 2:37 AM] kenzoagada
+
+
+{Attachments}
+Code4rena - ARCHIVE-Q2-2022 - ☑illuminate-jun21 [986762719942291476].txt_Files/unknown-B8747.png
+
+{Reactions}
+😂 (14) badgerchad 
+
+[06/25/2022 2:52 AM] Julian | Illuminate#0001
+Heyyo heyyo just got back online from eth nyc!
+
+
+[06/25/2022 3:17 AM] datapunk
+is this even a correct statement? Aren't the variables optimized away when being compiled anyway?
+
+
+[06/25/2022 3:19 AM] Julian | Illuminate#0001
+🤷 again i sympathize with yall lol, but you definitely do get used to it after some time
+
+It does help reading *quicker* and scanning the codebase if youre familiar with the natspec
+
+But its up to you to say whether *quicker* is ever better :LUL:
+
+
+[06/25/2022 3:19 AM] kenzoagada
+Maybe the dev meant that in a large codebase, too many variables with too long and intricate namings will impair general function readability... That's how I understand it
+
+
+[06/25/2022 3:20 AM] Julian | Illuminate#0001
+^^ yeah pretty much this.
+
+Its the opposite of: https://projects.haykranen.nl/java/
+
+
+[06/25/2022 3:20 AM] kenzoagada
+lol... 🥲
+
+
+[06/25/2022 3:21 AM] datapunk
+so something like "TestsCollectionServerParameterWrapperCallbackValue" should be TCSPWCV?
+
+
+[06/25/2022 3:21 AM] Julian | Illuminate#0001
+lol fuck you got me there
+
+
+[06/25/2022 3:22 AM] kenzoagada
+At that point you can just go the Maker route and call it `fronk`
+
+
+[06/25/2022 5:41 AM] ak19966
+is it fair to update the audit code repository when it is under audit stage ??
+
+{Reactions}
+💯 
+
+[06/25/2022 5:44 AM] ak19966
+I dont think it can be updated...
+
+
+[06/25/2022 5:44 AM] ak19966
+can somebody clarify ?
+
+
+[06/25/2022 6:28 AM] 0x1f8b
+Agree, I didn't check the changes and I usually clone the repository at the beginning, I hope that judges will evaluate the initial commit, the announcement one, that's fair
+
+{Reactions}
+👍 
+
+[06/25/2022 7:17 AM] kirk_baird
+Nope we don't normally allow changing the commit during the contest. This one was done accidentally early on and once it was changed it can't easily be changed back because some people will be looking at the new commit.
+My recommendation is to just work off the commit you started on, post the githublinks to that commit etc
+
+{Reactions}
+👍 
+
+[06/25/2022 7:34 AM] ak19966
+Okey..
+
+
+[06/25/2022 7:35 AM] ak19966
+the fact is.. when something is committed after the contest started. the participants may start working on different versions of code which will dilute the spirit of competition
+
+
+[06/25/2022 9:01 AM] kirk_baird
+Yea it's not great hey, it's happened a few times. One solution that is being considered is not letting anyone have access to the findings repo or main repo until after a contest ends.
+
+
+[06/25/2022 9:19 AM] ak19966
+thats what I am also thinking... its better solution
+
+
+[06/25/2022 12:45 PM] Julian | Illuminate#0001
+So the only changes that got sent through were 
+1. An interfaces issue where the wrong interfaces got added to the repo (causing things literally not to compile), so a warden requested an update there and we updated it from "IErc20"->"IERC20"
+2. Similarly for compilation we use the new --via-ir to help with stack depth and it was messing with some wardens compilation so we added scoping to some methods for them.
+
+So none of this should impact the contest whatsoever I'd think?
+
+{Reactions}
+👍 
+
+[06/25/2022 12:46 PM] Julian | Illuminate#0001
+Anyone submitting any findings between the two will have exactly the same findings, and no remediation were pushed whatsoever
+
+
+[06/25/2022 12:58 PM] Julian | Illuminate#0001
+P.s. just woke up so getting to any messages from last night one by one in just a second :imback:
+
+
+[06/25/2022 1:01 PM] kirk_baird
+Yep without any logic changes it shouldnt really effect the competition :)
+
+
+[06/25/2022 2:21 PM] stermi
+Would be possible to get some user flow scenario with real-life example?
+
+
+[06/25/2022 2:50 PM] cryptphi
+is the Liquidity Pool contract available? I only see the interface
+
+
+[06/25/2022 3:12 PM] Julian | Illuminate#0001
+For sure, we're just working with Yield Protocol to utilize their yieldspace pools
+
+
+[06/25/2022 3:13 PM] Julian | Illuminate#0001
+https://github.com/yieldprotocol/yieldspace-v2/blob/main/contracts/Pool.sol
+/ 
+https://github.com/yieldprotocol/yieldspace-tv/blob/main/src/Pool/Pool.sol
+
+
+[06/25/2022 3:13 PM] cryptphi
+thanks....
+
+
+[06/25/2022 3:20 PM] Julian | Illuminate#0001
+**You: A lender looking to get the best rate possible (off-chain)**
+
+1. Call our API to request the "best rate". We query all the AMMs, etc., and return the correct params, etc., for you to call `lend`.
+2. You call lend, effectively purchasing PTs from an external protocol, and wrapping them into iPTs, leaving the external PTs in lender.sol
+3. Time passes
+3a. Maturity for the external PT hits, and *someone* (if noone external, the admins can) calls `redeem` for the external PT. This transfers PTs from lender.sol to redeemer.sol, redeems them into underlying.
+4. You the lender come and redeem your iPT, it gets burnt and you get returned a 1-1 amount of underlying (that is currently in redeemer.sol)
+
+{Reactions}
+👍 
+
+[06/25/2022 3:23 PM] Julian | Illuminate#0001
+**You: An arbitrageur / MEV**
+
+1. Constantly monitor the iPT pool as well as the external PT pools
+2. Wait for an external PT for be < the iPT
+3. Purchase external PT with underlying
+4. Wrap external PT -> iPT 
+5. sell iPT back to underlying pocketing the difference
+
+{Reactions}
+👍 
+
+[06/25/2022 3:25 PM] Julian | Illuminate#0001
+**You: A lender trying to get the best rate (on-chain)**
+
+1. integrate with iPT pool
+2. `sellBase` through marketplace
+TransfersFrom user -> iPT pool and purchases iPT
+3-4. Same as off-chain
+
+^^ This user can be confident they get the best rate due to the constant arbitrage by the case before it
+
+{Reactions}
+👍 
+
+[06/26/2022 6:52 AM] un_for_given
+@Julian | Illuminate is it possible to extend contest for couple of hours so we can report our findings?
+
+{Reactions}
+👎 (3) 
+
+[06/26/2022 6:55 AM] 100proof
+You probably already know this @unforgiven, but just in case you didn't, there are 13 hours to go on the contest.
+
+
+[06/26/2022 7:03 AM] un_for_given
+Yes I know but one need to prepare for the worst and hope for the best😃
+
+{Reactions}
+🔥 
+
+[06/26/2022 7:03 AM] 100proof
+Gotcha! Reports can sometimes take quite a while to write 🙂
+
+{Reactions}
+👍 (2) 
+
+[06/26/2022 7:20 AM] cryptphi
+When @unforgiven  says this, he's got a tonne load of report to write and send.... 😩
+
+{Reactions}
+😉 (2) 😃 weebay 
+
+[06/26/2022 8:33 AM] elku.cryptos
+worst case scenario, just send me half of it. and i will reluctantly format and upload it from side. 😋
+
+{Reactions}
+😂 (10) 
+
+[06/26/2022 1:13 PM] stermi
+@Julian | Illuminate could you better explain the contract and function called for 3a) and 4)?
+
+in point 3a) the user (lender) call `Redeemer.redeem` (one of the overloaded method) right?
+for method 4) Could you explain better this part?
+
+
+[06/26/2022 2:04 PM] sourabh.
+I think 3a and 4 are related so I'll try to provide a bit of clarity here:
+Both the `lend` method in Lender.sol and the `redeem` method are overloaded in Redeemer.sol. Users will call Illuminate's `redeem` method to redeem their debt. 
+In other words, the non-Illuminate `redeem` calls transfer the principal tokens from the lender contract to the redeemer contract and then retrieve the underlying asset from their respective protocol. From there, Illuminate's `redeem` burns the user's iPTs, and in turn sends the user the underlying asset. The redemption process is a two step process with the overloaded `redeem` method getting called twice.
+
+{Reactions}
+thankyou 👍 
+
+[06/26/2022 4:36 PM] ak19966
+I am not sure what is the necessary for too many overloaded function!!!!...
+
+
+[06/26/2022 4:36 PM] ak19966
+really very demand in names..
+
+{Reactions}
+😆 
+
+[06/26/2022 8:02 PM] C4
+**🚨 CONTEST ALERT**
+
+@🐺wardens The **Illuminate** contest is now closed! Huge thanks to everyone who participated 🔍, whether you submitted a finding or not.
+
+What's next: the **Illuminate** team will review the findings over the next couple of days, and then we'll pass them off to the judge. Keep an eye on #📢announcements for regular updates on how the contest is progressing through awarding 🤑🏆, judging 🧑‍⚖️ and reporting 📜. Feel free to ping a gardener if you have questions along the way!
+
+
+[06/26/2022 8:11 PM] fufanuu
+there's no way this is more efficient for a dev than using full words in any situation.
+
+
+[06/26/2022 8:12 PM] fufanuu
+especially because you want to think about new devs coming in to work on your codebase that have no knowledge.
+
+
+[06/26/2022 8:12 PM] fufanuu
+just my .02 but one of our rules is a hard and fast no abbreviations.
+
+
+[06/26/2022 8:13 PM] m4rio.eth
+I've been coding for more than 12 years now
+
+
+[06/26/2022 8:13 PM] fufanuu
+having to lookup natspec every time i see a letter is painful
+
+
+[06/26/2022 8:13 PM] m4rio.eth
+never ever i heard someone saying that variables m, a, c, d
+
+
+[06/26/2022 8:14 PM] m4rio.eth
+makes the code more readable 😆
+
+
+[06/26/2022 8:14 PM] fufanuu
+ditto, going on 20 years here
+
+{Reactions}
+pepelove 
+
+[06/26/2022 8:14 PM] fufanuu
+it's always been a huge NOPE in any team i've run.
+
+
+[06/26/2022 8:14 PM] m4rio.eth
+that is why everyone is happy with the compilers
+
+
+[06/26/2022 8:14 PM] m4rio.eth
+like write big ass variables
+
+
+[06/26/2022 8:14 PM] m4rio.eth
+and the compiler is making sure it does not matter
+
+
+[06/26/2022 8:14 PM] m4rio.eth
+:d
+
+
+[06/26/2022 8:14 PM] fufanuu
+yea i would rather have `somethingThatTellsMeWhatItIs` than `s`
+
+
+[06/26/2022 8:15 PM] m4rio.eth
+everyone is blaming java but java code is very readable
+
+
+[06/26/2022 8:15 PM] m4rio.eth
+every method you kinda know what it does without even looking too much
+
+
+[06/26/2022 8:15 PM] fufanuu
+i'll be honest, i stopped working on this cause i got tired of referencing natspec all the time
+
+{Reactions}
+👍 
+
+[06/26/2022 8:15 PM] fufanuu
+🤷
+
+
+[06/26/2022 8:15 PM] m4rio.eth
+as it says in the name
+
+
+[06/26/2022 8:15 PM] m4rio.eth
+same, i tried half an h but got a bit of headaches so i passed
+
+
+[06/26/2022 8:15 PM] fufanuu
+yep, same.
+
+
+[06/26/2022 8:16 PM] m4rio.eth
+anyhow, good luck 💪🏻
+
+{Reactions}
+💯 
+
+[06/27/2022 1:15 AM] kenzoagada
+Honestly I found the short variables names quite nice in the end. I see the point that it makes it easier to see at a glance what the actual function code does.
+
+
+[06/27/2022 4:57 AM] anonnp
+Hey that variable naming was a lot better than Maker's one 🙂 wen MakerDAO contest? :9029_hehe_pepe:
+
+
+[06/27/2022 12:34 PM] 0xsorrynotsorry
+Hey @Julian | Illuminate , can you check your DM please. It's not related with the contest btw.
+
+{Reactions}
+OK 
+
+[06/27/2022 12:40 PM] Julian | Illuminate#0001
+Well I actually DO appreciate the input
+
+{Reactions}
+👍 
+
+[06/27/2022 12:41 PM] Julian | Illuminate#0001
+Even if folks are memeing it into existenxe lol, it's something I've personally argued a bit about in the past so we might end up with a move towards more standard variables with all the outside input
+
+
+[06/27/2022 12:41 PM] Julian | Illuminate#0001
+(Wed done a few audits in the past and noone bitched before so I thought I was crazy lol)
+
+{Reactions}
+😂 (5) 
+
+[06/27/2022 12:43 PM] Julian | Illuminate#0001
+And having folks care enough to complain in my mind is good. It's important to get the most out of audits and making auditors lives fun/easy is most of that job really
+
+{Reactions}
+💯 (2) 💜 (2) 
+
+[06/27/2022 12:47 PM] elku.cryptos
+Allright. I take back what I said.
+
+
+[06/27/2022 12:48 PM] Julian | Illuminate#0001
+Lolol I think yall might be clowning a bit *too* hard but I don't take it personally
+
+
+[06/27/2022 12:54 PM] cryptphi
+hopefully you didn't mind i sent the unconventional naming issue as a non-critical finding, it's an audit so submitting it as a low or informational finding is a proper way to go about it. It's left to the sponsor to accept it. At least that's how it's done in my previous consulting experience
+
+
+[08/01/2022 2:39 AM] TurnipBoy#5973
+Any update on this contest?
+
+
+[08/01/2022 6:47 PM] ajtra#5030
+https://github.com/code-423n4/code423n4.com/pull/3192
+
+{Embed}
+https://github.com/code-423n4/code423n4.com/pull/3192
+Update leaderboard for contest: Illuminate by code423n4 · Pull Requ...
+This auto-generated PR to the update the leaderboard
+Code4rena - ARCHIVE-Q2-2022 - ☑illuminate-jun21 [986762719942291476].txt_Files/3192-F4BA2
+
+
+[08/04/2022 8:54 AM] ajtra#5030
+what happend whit this contest? there was the PR with the awards and now the PR has been closed. Could you give us an update?
+
+
+[08/04/2022 8:56 AM] thepicodes
+Probably some last minute change in judging. It should be out soon as it already went through post judging Q&A
+
+
+[08/04/2022 9:07 AM] anonnp
+It looked like there were some merge conflicts there. Idk if there was any other problem also
+
+
+[08/04/2022 9:10 AM] 0xsorrynotsorry
+Gents, no worries. See the comment from the team: https://github.com/code-423n4/code423n4.com/pull/3192#issuecomment-1204784365
+
+
+[08/05/2022 9:46 AM] anonnp
+What does it mean
+
+
+[08/05/2022 9:53 PM] itsmetechjay
+🤑 🎉 Awards for **Illuminate**:
+
+$7,670.50 USDC » @kenzo 
+$5,032.65 USDC » @datapunk 
+$3,614.61 USDC » @cccz 
+$3,351.90 USDC » @kirk-baird 
+$3,202.35 USDC » @0x52 - Away Until 8/9 
+$2,750.99 USDC » @csanuragjain 
+$2,178.29 USDC » @hyh 
+$2,001.06 USDC » WatchPug (@JtP | WATCHPUG, @Ming | WATCHPUG)
+$1,748.70 USDC » @Alex The Entreprenerd 
+$1,544.41 USDC » @unforgiven 
+$1,517.94 USDC » @Roman 
+$1,431.17 USDC » @IllIllI 
+$1,262.76 USDC » @Kumpa 
+$993.99 USDC » @Metatron 
+$926.63 USDC » @pashov 
+$874.68 USDC » @DefSec 
+$845.58 USDC » @bardamu 
+$798.19 USDC » @ladboy233小伙子 
+$784.12 USDC » @shenwilly 
+$771.43 USDC » @Chom 
+$680.89 USDC » BowTiedWardens @BowTiedHeron, @BowTiedPickle, @m4rio.eth, @Dravee , @BowTiedFirefox)
+$602.51 USDC » @0x29A (@anon, @Rotcivegaf)
+$578.38 USDC » @cryptphi 
+$553.30 USDC » @auditor0517 
+$517.47 USDC » @sashik_eth 
+$490.35 USDC » @hansfriese 
+$435.11 USDC » @Picodes | Angle 
+$319.95 USDC » @dipp 
+$311.72 USDC » @joestakey 
+$308.29 USDC » @P12473 
+$270.73 USDC » @Kulk0 
+$259.73 USDC » @Zer0dot 
+$240.93 USDC » @0x1f8b 
+$240.35 USDC » GimelSec (@rayn | GimelSec, @sces60107 | GimelSec)
+$231.76 USDC » @StErMi 
+$229.96 USDC » @robee 
+$180.67 USDC » @0xkowloon 
+$178.18 USDC » @thinklab 
+$172.22 USDC » poirots (@Davide Silva, @resende, @naps62)
+$164.24 USDC » @TomJ 
+$158.14 USDC » @simon135 
+$147.51 USDC » @0xkatana 
+$146.11 USDC » @Soosh 
+$144.81 USDC » @Waze 
+$142.95 USDC » @_Adam 
+$142.95 USDC » @catchup 
+$142.95 USDC » @grGred 
+$142.90 USDC » @Bnke 
+$142.90 USDC » @z3s 
+$128.88 USDC » @fatherOfBlocks 
+$128.26 USDC » @ElKu 
+$128.26 USDC » @madwookie 
+$127.02 USDC » @delfin454000 
+$126.97 USDC » @JC
+$126.97 USDC » @slywaters 
+$126.40 USDC » 0xf15ers (@remora0, @twojoy)
+$126.40 USDC » @0xNazgul 
+$126.40 USDC » @Sloth 
+$126.40 USDC » @Funen 
+$126.40 USDC » @hake | SmartSek 
+$126.40 USDC » kebabsec (@okkothejawa, @FlameHorizon)
+$126.40 USDC » @rfa 
+$118.21 USDC » @Django | Saloon Finance 
+$85.23 USDC » @saian 
+$79.01 USDC » @0xKitsune 
+$79.01 USDC » @ajtra 
+$79.01 USDC » @Tomio 
+$73.84 USDC » @Jah
+$63.94 USDC » @0xmint 
+$63.94 USDC » @0xNineDec 
+$63.94 USDC » @ak1 
+$63.94 USDC » @aysha 
+$63.94 USDC » @Kenshin 
+$63.94 USDC » @Limbooo 
+$63.89 USDC » @zeesaw 
+$63.89 USDC » @Yiko 
+$63.08 USDC » @Kaiziron 
+$63.08 USDC » @Noah3o6 
+$63.08 USDC » @UnusualTurtle 
+$62.46 USDC » @0v3rf10w 
+$62.46 USDC » @c3phas 
+$62.46 USDC » @Fitraldys 
+$62.46 USDC » @Ignacio 
+$62.46 USDC » @Nyamcil 
+$62.46 USDC » @RoiEvenHaim 
+$62.46 USDC » @sach1r0 
+$62.46 USDC » @samruna 
+$54.27 USDC » @tintin 
+
+🏁 Findings summary
+---------------------------
+High risk findings: 123 total, 16 unique
+Med risk findings: 51 total, 13 unique
+Gas optimization reports: 56
+QA reports: 62
+
+Awards will be distributed on Polygon within the next 1-2 weeks. Congratulations all! 💸 💸 💸
+
+
+[08/05/2022 9:54 PM] nine_december
+@kenzo will notice about this in 5 days! It will be the best login ever...
+
+{Reactions}
+😂 (24) 🎉 (14) 💯 (3) swivelHeat (2) swintensifies 
+
+[08/05/2022 11:36 PM] cryptphi
+he went rampant on this contest
+
+
+[08/10/2022 2:55 PM] kenzoagada
+Haha cheers guys 🙂
+
+{Reactions}
+🎉 (5) 
+
+[08/17/2022 9:59 AM] bnke0x0
+I don’t received an award for Illuminate
+
+
+[08/17/2022 12:11 PM] okkothejawa
+Asking just to be sure, if you are using Metamask or a similar wallet, did you import the address of USDC on Polygon to your wallet?
+
+
+[08/17/2022 12:14 PM] bnke0x0
+Is ETH wallet address
+
+
+[08/17/2022 12:14 PM] bnke0x0
+Payeer
+
+
+[08/17/2022 12:14 PM] bnke0x0
+I used Payeer wallet
+
+
+[08/17/2022 12:15 PM] okkothejawa
+The payments are done through Polygon, not ETH mainnet
+
+
+[08/17/2022 12:15 PM] bnke0x0
+Oh no 🙊
+
+
+[08/17/2022 12:16 PM] okkothejawa
+In the case of Metamask, addresses support all EVM based chains
+
+
+[08/17/2022 12:16 PM] okkothejawa
+not sure about Payeer but its worth checking, maybe it supports Polygon too!
+
+
+[08/17/2022 12:17 PM] codingnamekiki
+l have a similar question, so l can receive future awards on metamask polygon mainnet right?
+
+
+[08/17/2022 12:18 PM] bnke0x0
+I don’t sure about it
+
+
+[08/17/2022 12:19 PM] bnke0x0
+I open help ticket on code4rena website
+
+
+[08/17/2022 12:21 PM] okkothejawa
+If you already have an address on Metamask, yes you can. Metamask supports other EVM chains such as BSC or Polygon
+
+To be extra comfy, add Polygon network to your wallet (take care with adding the correct one) and the USDC contract to it
+
+{Reactions}
+hi5 
+
+[08/17/2022 12:26 PM] codingnamekiki
+thanks to you guys now everything is clear
+
+
+[08/17/2022 2:33 PM] bnke0x0
+https://youtu.be/LAv_wpDVLlM
+
+{Embed}
+MoneyZG
+https://www.youtube.com/watch?v=LAv_wpDVLlM
+Polygon MetaMask Tutorial (How to Use Polygon MATIC Wallet for Ethe...
+Polygon MetaMask tutorial - how to set up Polygon Wallet, use Polygon Bridge to move Ethereum tokens to Polygon Matic wallet and use Ethereum DeFi DAPPS like AAVE on Polygon network. Polygon tutorial with MetaMask
+
+Trade on Binance: https://bit.ly/Binance-MZG
+Trezor Hardware Wallet: https://bit.ly/Trezor-ZG
+Use VPN to Protect Yourself: https://b...
+Code4rena - ARCHIVE-Q2-2022 - ☑illuminate-jun21 [986762719942291476].txt_Files/maxresdefault-7ADB4.jpg
+
+{Reactions}
+💯 
+
+[08/17/2022 2:35 PM] bnke0x0
+This video will help you to connect your MetaMask with Polygon 😇
+
+
+[08/17/2022 2:35 PM] bnke0x0
+And you can find your awards in polygon wallet
+
+
+==============================================================
+Exported 190 message(s)
+==============================================================
